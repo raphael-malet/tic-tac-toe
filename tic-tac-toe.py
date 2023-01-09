@@ -2,7 +2,6 @@
 grille_depart = ["-","-","-",
                  "-","-","-",
                  "-","-","-",]
-
 gagnant = None
 partie_en_cours = True
 
@@ -20,29 +19,30 @@ else:
 
 joueur_actuel = joueur1
 
-#impression de la grille vide 
+#Début du jeu 
 def jouer_partie():
-
+#boucle tant que la partie n'est pas nul ou gagné
     while partie_en_cours:
-        grille_fonction()
-        grille_jeu()
-        partie_nul()
-        winner()
-        tour_joueur()
+        grille_fonction()#print la grille
+        grille_jeu()#permet au joeur de jouer
+        winner()#vérification si il y a un gagnat
+        partie_nul()#vérification match nul
+        tour_joueur()#changement de joueur
+    #print le signe du gagnant
     if gagnant == 'X' or gagnant =='O':
         grille_fonction()
         print('le gagnat est ' + gagnant +'\n')
     else :
-        print('\nMatch nul')
+        print('\nMatch nul') # print match nul
         
-
+#fonction affichage grille
 def grille_fonction():
     print(grille_depart[0]+' | ' + grille_depart[1]+ ' | ' +grille_depart[2] + '         1 | 2 | 3')
     print(grille_depart[3]+' | ' + grille_depart[4]+ ' | ' +grille_depart[5] + '         4 | 5 | 6')
     print(grille_depart[6]+' | ' + grille_depart[7]+ ' | ' +grille_depart[8] + '         7 | 8 | 9\n')   
-
 print(' ')
 
+#fonction entrer qui permet de jouer + remplacement signe dans la grille de débpart
 def grille_jeu():
     while True:
         placement = int(input('entrer  votre emplacement de 1 à 9 : \n'))-1
@@ -56,7 +56,8 @@ def grille_jeu():
             print('Votre entré ne correspond a aucune case\n')
             continue
     grille_depart[placement] = joueur_actuel
-    
+  
+#changement de joueur  
 def tour_joueur():
     global joueur_actuel
     global joueur1
@@ -66,6 +67,7 @@ def tour_joueur():
     elif joueur_actuel == 'O':
         joueur_actuel = 'X'
 
+#vérification match nul
 def partie_nul():
     global partie_en_cours
     if '-' not in grille_depart:
@@ -73,6 +75,7 @@ def partie_nul():
     else:
         return False
 
+#vérification gagnant
 def winner():
     global gagnant
     global partie_en_cours
@@ -103,4 +106,4 @@ def winner():
     else :
         gagnant = None
         
-jouer_partie()
+jouer_partie() #fin de la fonction partie
