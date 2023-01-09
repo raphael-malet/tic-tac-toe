@@ -2,8 +2,12 @@
 grille_depart = ["-","-","-",
                  "-","-","-",
                  "-","-","-",]
-gagnant = None
+
+grille_placement =["1","2","3",
+                   "4","5","6",
+                   "7","8","9",]
 partie_en_cours = True
+gagnant = None
 
 #choix signe joueurs
 while True :
@@ -16,11 +20,14 @@ if joueur1 =='X':
     joueur2='O'
 else:
     joueur2 ='X'
-
 joueur_actuel = joueur1
 
 #Début du jeu 
+
 def jouer_partie():
+    global grille_partie
+    grille_partie = grille_depart
+    
 #boucle tant que la partie n'est pas nul ou gagné
     while partie_en_cours:
         grille_fonction()#print la grille
@@ -28,26 +35,30 @@ def jouer_partie():
         winner()#vérification si il y a un gagnat
         partie_nul()#vérification match nul
         tour_joueur()#changement de joueur
+    
     #print le signe du gagnant
-    if gagnant == 'X' or gagnant =='O':
+    if gagnant == joueur1 or gagnant ==joueur2:
         grille_fonction()
-        print('le gagnat est ' + gagnant +'\n')
+        print(gagnant +' est le GRAND GAGNANT !!!!'+'\n')
+        rejouer()
     else :
         print('\nMatch nul') # print match nul
+        rejouer()
         
 #fonction affichage grille
 def grille_fonction():
-    print(grille_depart[0]+' | ' + grille_depart[1]+ ' | ' +grille_depart[2] + '         1 | 2 | 3')
-    print(grille_depart[3]+' | ' + grille_depart[4]+ ' | ' +grille_depart[5] + '         4 | 5 | 6')
-    print(grille_depart[6]+' | ' + grille_depart[7]+ ' | ' +grille_depart[8] + '         7 | 8 | 9\n')   
+    print(grille_partie[0]+' | ' + grille_partie[1]+ ' | ' +grille_partie[2] + '         1 | 2 | 3')
+    print(grille_partie[3]+' | ' + grille_partie[4]+ ' | ' +grille_partie[5] + '         4 | 5 | 6')
+    print(grille_partie[6]+' | ' + grille_partie[7]+ ' | ' +grille_partie[8] + '         7 | 8 | 9\n')   
 print(' ')
 
 #fonction entrer qui permet de jouer + remplacement signe dans la grille de débpart
 def grille_jeu():
-    while True:
-        placement = int(input('entrer  votre emplacement de 1 à 9 : \n'))-1
-        if  placement < 9:
-            if '-' in grille_depart[placement] :
+    while True :
+        placement = input('Entrer emplacement de 1 à 9 :\n')
+        if placement in grille_placement:
+            placement = int(placement)-1
+            if '-' in grille_partie[placement] :
                 break
             else:
                 print('case déja choisis\n')
@@ -55,7 +66,7 @@ def grille_jeu():
         else:
             print('Votre entré ne correspond a aucune case\n')
             continue
-    grille_depart[placement] = joueur_actuel
+    grille_partie[placement] = joueur_actuel
   
 #changement de joueur  
 def tour_joueur():
@@ -70,7 +81,7 @@ def tour_joueur():
 #vérification match nul
 def partie_nul():
     global partie_en_cours
-    if '-' not in grille_depart:
+    if '-' not in grille_partie:
         partie_en_cours = False
     else:
         return False
@@ -79,31 +90,38 @@ def partie_nul():
 def winner():
     global gagnant
     global partie_en_cours
-    if grille_depart[0] == grille_depart[1] == grille_depart[2] !='-':
-        gagnant = grille_depart[0] 
+    if grille_partie[0] == grille_partie[1] == grille_partie[2] !='-':#premiere ligne
+        gagnant = grille_partie[0] 
         partie_en_cours = False 
-    elif grille_depart[3] == grille_depart[4] == grille_depart[5] !='-' :
-        gagnant = grille_depart[3]
+    elif grille_partie[3] == grille_partie[4] == grille_partie[5] !='-' :#deuxieme ligne
+        gagnant = grille_partie[3]
         partie_en_cours = False 
-    elif grille_depart[6] == grille_depart[7] == grille_depart[8] !='-' :
-        gagnant = grille_depart[6] 
+    elif grille_partie[6] == grille_partie[7] == grille_partie[8] !='-' :#3eme ligne
+        gagnant = grille_partie[6] 
         partie_en_cours = False  
-    elif grille_depart[0] == grille_depart[3] == grille_depart[6] !='-' :
-        gagnant = grille_depart[0]
+    elif grille_partie[2] == grille_partie[5] == grille_partie[8] !='-' :#3eme colone
+        gagnant = grille_partie[2]
         partie_en_cours = False 
-    elif grille_depart[1] == grille_depart[4] == grille_depart[5] !='-' :
-        gagnant = grille_depart[1]
+    elif grille_partie[0] == grille_partie[3] == grille_partie[6] !='-' :#1ere colone
+        gagnant = grille_partie[0]
         partie_en_cours = False  
-    elif grille_depart[2] == grille_depart[5] == grille_depart[8] !='-' :
-        gagnant = grille_depart[2]
+    elif grille_partie[1] == grille_partie[4] == grille_partie[7] !='-' :#2eme colone
+        gagnant = grille_partie[1]
         partie_en_cours = False 
-    elif grille_depart[0] == grille_depart[4] == grille_depart[8] !='-' :
-        gagnant = grille_depart[0]
+    elif grille_partie[0] == grille_partie[4] == grille_partie[8] !='-' :#premiere diagonal
+        gagnant = grille_partie[0]
         partie_en_cours = False 
-    elif grille_depart[2] == grille_depart[4] == grille_depart[6] !='-' :
-        gagnant = grille_depart[0]
+    elif grille_partie[2] == grille_partie[4] == grille_partie[6] !='-' :#deuxieme diagonal
+        gagnant = grille_partie[2]
         partie_en_cours = False 
     else :
-        gagnant = None
-        
-jouer_partie() #fin de la fonction partie
+        gagnant = None     
+
+
+def rejouer():
+    choix= input('Voulez-vous rejouer ? oui = 1 Non = 2 :\n')
+    if choix == '1' :
+        jouer_partie()
+    else:
+        quit()
+jouer_partie()#fin de la fonction partie
