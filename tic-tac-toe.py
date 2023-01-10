@@ -6,6 +6,7 @@ grille_depart = ["-","-","-",
 grille_placement =["1","2","3",
                    "4","5","6",
                    "7","8","9",]
+
 partie_en_cours = True
 gagnant = None
 
@@ -18,31 +19,33 @@ while True :
         continue
 if joueur1 =='X':
     joueur2='O'
+    print('Jouer 1 = X et joueur 2 = O.')
 else:
     joueur2 ='X'
+    print('joueuer 1 = O et joueur 2 = X.')
 joueur_actuel = joueur1
 
 #Début du jeu 
 
 def jouer_partie():
     global grille_partie
-    grille_partie = grille_depart
-    
+    grille_partie = grille_depart   
 #boucle tant que la partie n'est pas nul ou gagné
     while partie_en_cours:
-        grille_fonction()#print la grille
-        grille_jeu()#permet au joeur de jouer
         winner()#vérification si il y a un gagnat
         partie_nul()#vérification match nul
+        grille_fonction()#print la grille
+        grille_jeu()#permet au joeur de jouer
+        winner()
+        partie_nul()
         tour_joueur()#changement de joueur
-    
     #print le signe du gagnant
     if gagnant == joueur1 or gagnant ==joueur2:
         grille_fonction()
         print(gagnant +' est le GRAND GAGNANT !!!!'+'\n')
         rejouer()
     else :
-        print('\nMatch nul') # print match nul
+        print('\nMatch nul :(') # print match nul
         rejouer()
         
 #fonction affichage grille
@@ -55,16 +58,18 @@ print(' ')
 #fonction entrer qui permet de jouer + remplacement signe dans la grille de débpart
 def grille_jeu():
     while True :
-        placement = input('Entrer emplacement de 1 à 9 :\n')
+        placement = input('Au tour du joueur '+ joueur_actuel +' de jouer.'+ '\nEntrer emplacement de 1 à 9 :\n')
         if placement in grille_placement:
             placement = int(placement)-1
             if '-' in grille_partie[placement] :
                 break
             else:
-                print('case déja choisis\n')
+                print('\ncase déja choisis.\n')
+                grille_fonction()
                 continue
         else:
-            print('Votre entré ne correspond a aucune case\n')
+            print('\nVotre entré ne correspond a aucune case.\n')
+            grille_fonction()
             continue
     grille_partie[placement] = joueur_actuel
   
@@ -84,7 +89,7 @@ def partie_nul():
     if '-' not in grille_partie:
         partie_en_cours = False
     else:
-        return False
+        return None
 
 #vérification gagnant
 def winner():
@@ -119,9 +124,25 @@ def winner():
 
 
 def rejouer():
-    choix= input('Voulez-vous rejouer ? oui = 1 Non = 2 :\n')
-    if choix == '1' :
-        jouer_partie()
-    else:
-        quit()
+    global grille_depart
+    global gagnant
+    global partie_en_cours
+    while True:
+        choix = input('Voulez-vous rejouer (oui/non) ? :\n')
+        if choix == 'oui' or choix == 'o' or choix =='y' or choix =='yes' :
+            grille_depart = ["-","-","-",
+                            "-","-","-",
+                            "-","-","-",]
+            gagnant = None
+            partie_en_cours = True
+            print('_______________________________\nUne nouvelle partie commence !!')
+            jouer_partie()
+        elif choix == 'non' or choix =='n' or choix =='no':
+            print('\nAurevoir et a bientot :D')
+            quit()
+        else:
+            print('\nEntrer oui, o, y pour rejouer ou non, n ou non pour quitter. ')
+            continue
+
+
 jouer_partie()#fin de la fonction partie
